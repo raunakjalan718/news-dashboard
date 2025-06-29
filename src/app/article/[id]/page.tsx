@@ -1,17 +1,32 @@
+// src/app/article/[id]/page.tsx (CORRECTED)
+
 "use client";
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image"; // 1. IMPORT next/image
 import { getArticleById } from "@/services/newsService";
 import { summarizeText } from "@/services/aiService";
 import styles from '../../newsPage.module.css';
+
+// 2. DEFINE a type for the article to replace 'any'
+interface Article {
+  title: string;
+  source: { name: string };
+  publishedAt: string;
+  urlToImage?: string | null;
+  content?: string | null;
+  description?: string | null;
+  url?: string;
+}
 
 export default function ArticleDetail() {
   const params = useParams();
   const router = useRouter();
   const id = decodeURIComponent(params.id as string);
   
-  const [article, setArticle] = useState<any>(null);
+  // 3. USE the new Article type instead of 'any'
+  const [article, setArticle] = useState<Article | null>(null);
   const [summary, setSummary] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   
@@ -63,17 +78,13 @@ export default function ArticleDetail() {
   
   return (
     <div className={styles.fullscreenBackground}>
-      {/* Top bar with matching button styles */}
       <div className={styles.topBar}>
-        {/* Back to News button - styled like the landing button */}
         <button 
           onClick={goToNews}
           className={styles.landingButton}
         >
           Back to News
         </button>
-
-        {/* Home button - renamed from "Go to Landing" */}
         <button 
           onClick={goToLanding}
           className={styles.landingButton}
@@ -82,7 +93,6 @@ export default function ArticleDetail() {
         </button>
       </div>
       
-      {/* Article content */}
       <div className={styles.articleContainer}>
         <h1 className={styles.articleTitle}>{article.title}</h1>
         
@@ -91,10 +101,15 @@ export default function ArticleDetail() {
         </div>
         
         {article.urlToImage && (
+          // Add position: 'relative' to this container's CSS for 'fill' to work
           <div className={styles.articleImageContainer}>
-            <img 
+            {/* 4. REPLACE <img> with next/image <Image> component */}
+            <Image 
               src={article.urlToImage} 
               alt={article.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 800px"
+              style={{ objectFit: 'cover' }} // Maintains aspect ratio
               className={styles.articleImage}
             />
           </div>
@@ -120,7 +135,6 @@ export default function ArticleDetail() {
         </div>
       </div>
       
-      {/* Footer with larger text */}
       <div className={styles.footer}>
         <div className={styles.footerContent}>
           <p>Raunak Jalan</p>

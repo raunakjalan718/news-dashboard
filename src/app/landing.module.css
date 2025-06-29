@@ -1,0 +1,106 @@
+@font-face {
+  font-family: 'Higuen Serif';
+  src: url('/fonts/HiguenSerif.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.fullscreenBackground {
+  background-image: url('/images/gbimg.jpeg');
+  background-size: cover;
+  background-position: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  z-index: 10;
+}
+
+.languageSelect {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 8px 12px;
+  font-family: 'Higuen Serif', serif;
+  width: 180px;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  appearance: auto;
+  cursor: pointer;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.languageSelect option {
+  background-color: rgba(255, 105, 180, 0.8);
+  color: white;
+}
+
+.liveIconContainer {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+}
+
+.liveIconContainer:hover {
+  opacity: 0.9;
+}
+
+.centerContent {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.mainTitle {
+  font-family: 'Higuen Serif', serif;
+  font-size: clamp(5rem, 15vw, 9rem);
+  color: white;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-family: 'Higuen Serif', serif;
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  color: white;
+  text-align: center;
+  max-width: 900px;
+  margin: 1.5rem auto 3rem;
+  letter-spacing: 2px;
+  line-height: 1.6;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.exploreButton {
+  font-family: 'Higuen Serif', serif;
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 1rem 3rem;
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.exploreButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}

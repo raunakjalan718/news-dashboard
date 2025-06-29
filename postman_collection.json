@@ -1,0 +1,60 @@
+{
+  "info": {
+    "name": "News Dashboard API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Top Headlines",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "https://newsapi.org/v2/top-headlines?country=us&pageSize=10",
+          "protocol": "https",
+          "host": ["newsapi.org"],
+          "path": ["v2", "top-headlines"],
+          "query": [
+            {
+              "key": "country",
+              "value": "us"
+            },
+            {
+              "key": "pageSize",
+              "value": "10"
+            },
+            {
+              "key": "apiKey",
+              "value": "862b55f83304476f817928479256eb35"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Hugging Face Summarize Text",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
+          "protocol": "https",
+          "host": ["api-inference.huggingface.co"],
+          "path": ["models", "facebook", "bart-large-cnn"]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization", 
+            "value": ""
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"inputs\":\"This is a test article content for summarization. The article discusses various aspects of AI technology and its applications in modern society. It explores how machine learning algorithms are changing the way we interact with digital systems and how natural language processing is enabling more natural interactions with computers. The article also touches on ethical considerations around AI development and deployment.\"}"
+        }
+      }
+    }
+  ]
+}

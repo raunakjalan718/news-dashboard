@@ -1,5 +1,3 @@
-// src/app/news/page.tsx (CORRECTED)
-
 "use client";
 
 import { useEffect, useState, useRef } from "react";
@@ -15,6 +13,7 @@ export default function NewsPage() {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
+  // Language options configuration
   const languageOptions = [
     { value: "us", label: "English (US)" },
     { value: "fr", label: "Français" },
@@ -23,23 +22,21 @@ export default function NewsPage() {
     { value: "it", label: "Italiano" }
   ];
   
+  // Get current language label
   const getCurrentLanguageLabel = () => {
-    return languageOptions.find(opt => opt.value === language)?.label || "English (US)";
+    const option = languageOptions.find(opt => opt.value === language);
+    return option ? option.label : "English (US)";
   };
   
-  // 1. SPLIT useEffect for better dependency management
-  // This effect fetches articles whenever the language changes
   useEffect(() => {
     fetchArticles();
-  }, [language, fetchArticles]);
-
-  // This effect runs once on mount to setup listeners and initial language
-  useEffect(() => {
+    
     const savedLanguage = localStorage.getItem("preferredLanguage");
     if (savedLanguage) {
       setLanguage(savedLanguage);
     }
     
+    // Close dropdown when clicking outside
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowDropdown(false);
@@ -50,12 +47,18 @@ export default function NewsPage() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [setLanguage]); // setLanguage is stable, so this runs only once
+  }, [fetchArticles, setLanguage]);
 
   const handleLanguageChange = (value: string) => {
+    console.log(`Changing language to: ${value}`);
     setLanguage(value);
     localStorage.setItem("preferredLanguage", value);
-    // 2. REMOVED setTimeout hack. The useEffect above will handle fetching.
+    
+    // Force refresh articles with the new language
+    setTimeout(() => {
+      fetchArticles();
+    }, 100);
+    
     setShowDropdown(false);
   };
 
@@ -69,7 +72,9 @@ export default function NewsPage() {
 
   return (
     <div className={styles.fullscreenBackground}>
+      {/* Top bar with language selector, refresh button, and home button */}
       <div className={styles.topBar}>
+        {/* Custom language dropdown - left */}
         <div className={styles.languageDropdownContainer} ref={dropdownRef}>
           <button 
             className={styles.languageDropdownToggle}
@@ -98,10 +103,12 @@ export default function NewsPage() {
           )}
         </div>
         
+        {/* Refresh button - center */}
         <button onClick={handleRefresh} className={styles.refreshButton}>
           Refresh News
         </button>
 
+        {/* Home button - right */}
         <button 
           onClick={goToLanding}
           className={styles.landingButton}
@@ -110,6 +117,7 @@ export default function NewsPage() {
         </button>
       </div>
 
+      {/* News article grid */}
       <div className={styles.newsContentContainer}>
         {loading ? (
           <div className={styles.loadingContainer}>
@@ -135,10 +143,14 @@ export default function NewsPage() {
         ) : (
           <div className={styles.noArticlesMessage}>
             <p>No articles available for this language. Try selecting a different language or refreshing.</p>
+            <button onClick={handleRefresh} className={styles.refreshButton}>
+              Refresh News
+            </button>
           </div>
         )}
       </div>
       
+      {/* Footer with larger text */}
       <div className={styles.footer}>
         <div className={styles.footerContent}>
           <p>Raunak Jalan</p>

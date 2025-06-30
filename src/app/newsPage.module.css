@@ -187,6 +187,21 @@
   font-family: 'Higuen Serif', serif;
 }
 
+.noArticlesMessage {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: white;
+  font-family: 'Higuen Serif', serif;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.noArticlesMessage p {
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
 /* Enhanced footer with larger text */
 .footer {
   background: rgba(0, 0, 0, 0.5);

@@ -10,7 +10,8 @@ const nextConfig = {
       'nypost.com', 
       'static01.nyt.com',
       'ichef.bbci.co.uk',
-      'assets.bwbx.io'
+      'assets.bwbx.io',
+      'media-cldnry.s-nbcnews.com' // <-- I ADDED THIS LINE
     ],
   },
   // This is needed to allow Next.js to process SVG files
@@ -23,4 +24,4 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
+module.exports = nextConfig;

@@ -6,27 +6,47 @@
   font-display: swap;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .fullscreenBackground {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.backgroundFixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
   background-image: url('/images/gbimg.jpeg');
   background-size: cover;
   background-position: center;
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  left: 0;
-  overflow: hidden;
+}
+
+.contentWrapper {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.pageExiting {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
 .topBar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem;
+  padding: 3rem;
   z-index: 10;
 }
 
@@ -34,7 +54,7 @@
   background: transparent;
   color: white;
   border: 2px solid white;
-  padding: 8px 12px;
+  padding: 10px 15px;
   font-family: 'Higuen Serif', serif;
   width: 180px;
   font-size: 1.2rem;
@@ -42,17 +62,25 @@
   appearance: auto;
   cursor: pointer;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  animation: slideIn 1s ease-out forwards;
+  transition: all 0.5s ease;
+}
+
+.languageSelect:hover {
+  transform: scale(1.05);
 }
 
 .languageSelect option {
   background-color: rgba(255, 105, 180, 0.8);
   color: white;
+  padding: 10px;
 }
 
 .liveIconContainer {
   cursor: pointer;
   position: relative;
   display: inline-block;
+  animation: pulse 2s infinite;
 }
 
 .liveIconContainer:hover {
@@ -66,6 +94,8 @@
   justify-content: center;
   align-items: center;
   padding: 0 1rem;
+  margin-bottom: 6rem;
+  margin-top: 2rem;
 }
 
 .mainTitle {
@@ -73,8 +103,22 @@
   font-size: clamp(5rem, 15vw, 9rem);
   color: white;
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateY(-30px);
+  animation: titleEntrance 1.5s forwards;
+}
+
+@keyframes titleEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .subtitle {
@@ -83,10 +127,11 @@
   color: white;
   text-align: center;
   max-width: 900px;
-  margin: 1.5rem auto 3rem;
+  margin: 2.5rem auto 4rem;
   letter-spacing: 2px;
-  line-height: 1.6;
+  line-height: 1.8;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  animation: slideUp 1.5s ease-out forwards;
 }
 
 .exploreButton {
@@ -94,13 +139,340 @@
   background: transparent;
   color: white;
   border: 2px solid white;
-  padding: 1rem 3rem;
+  padding: 1.2rem 3.5rem;
   font-size: 1.4rem;
   letter-spacing: 3px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  animation: scaleIn 1s ease-out forwards;
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .exploreButton:hover {
+  animation: glow 2s infinite;
   background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-5px);
+}
+
+/* Bouncing Text Animation - Original Speed */
+.bouncing-text {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.bouncing-text span {
+  display: inline-block;
+  position: relative;
+  animation: smoothBounce 1.5s cubic-bezier(0.5, 0.05, 0.7, 0.5) infinite; /* Restored to original speed */
+}
+
+@keyframes smoothBounce {
+  0%, 100% {
+    top: 0;
+    text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+  50% {
+    top: -20px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),
+                 0 2px 0 rgba(255, 255, 255, 0.3),
+                 0 3px 0 rgba(255, 255, 255, 0.2),
+                 0 4px 0 rgba(255, 255, 255, 0.1),
+                 0 5px 0 rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* Feature Cards Styles with improved spacing */
+.featuresSection {
+  width: 100%;
+  padding: 3rem 0 9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.featuresTitle {
+  font-family: 'Higuen Serif', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: white;
+  text-align: center;
+  margin-bottom: 5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+}
+
+.featuresTitle.scrolled {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.featuresTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.8), rgba(255,255,255,0));
+}
+
+.featuresTitle.scrolled::after {
+  animation: expandWidth 2s ease-out forwards 0.5s;
+}
+
+.featuresCarousel {
+  width: 90%;
+  max-width: 1400px;
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+}
+
+.featuresCarousel.scrolled {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.carouselTrack {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.featureCard {
+  flex: 0 0 calc(33.333% - 3rem);
+  margin: 0 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.cardImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.cardContent {
+  padding: 2rem;
+}
+
+.cardTitle {
+  font-family: 'Higuen Serif', serif;
+  font-size: 1.7rem;
+  color: white;
+  margin: 0 0 1.5rem;
+  font-weight: bold;
+}
+
+.cardDescription {
+  font-family: 'Higuen Serif', serif;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.8;
+}
+
+.carouselButtons {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+  opacity: 0;
+  transition: opacity 2s ease-out 0.5s;
+}
+
+.carouselButtons.scrolled {
+  opacity: 1;
+}
+
+.carouselButton {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0 1rem;
+  transition: all 0.5s ease;
+  font-size: 1.2rem;
+}
+
+.carouselButton:hover {
+  transform: scale(1.2);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.carouselIndicators {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+  opacity: 0;
+  transition: opacity 2s ease-out 0.8s;
+}
+
+.carouselIndicators.scrolled {
+  opacity: 1;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.indicator:hover {
+  transform: scale(1.5);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.indicator.active {
+  background: white;
+  transform: scale(1.2);
+  animation: pulse 2s infinite;
+}
+
+/* Footer Styles */
+.footer {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1.5rem 2rem;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.footer.scrolled {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.footerContent {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  font-family: 'Higuen Serif', serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  font-size: 1.3rem;
+}
+
+.footerContent p {
+  position: relative;
+  overflow: hidden;
+  padding: 5px 0;
+}
+
+.footerContent p::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: rgba(255, 105, 180, 0.7);
+  transition: width 0.3s ease;
+}
+
+.footerContent p:hover::after {
+  width: 100%;
+}
+
+/* Keyframes for various animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+  100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+}
+
+@keyframes expandWidth {
+  from { width: 0; }
+  to { width: 150px; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .featureCard {
+    flex: 0 0 calc(50% - 3rem);
+  }
+  
+  .footerContent {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .footerContent p {
+    margin: 0.5rem 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .featureCard {
+    flex: 0 0 calc(100% - 3rem);
+  }
+  
+  .topBar {
+    padding: 2rem;
+  }
+  
+  .featuresTitle {
+    margin-bottom: 3rem;
+  }
 }

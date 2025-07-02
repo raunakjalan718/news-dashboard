@@ -18,13 +18,9 @@ npm run dev
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Where I Used AI (ChatGPT or otherwise)
+## Project Demo:
 
-- Used Claude Sonnet 3.7 via You.com to generate the project structure and component templates
-- Used AI to help design the API integration with News API
-- Used AI for creating the prompt for article summarization with Hugging Face
-- Got assistance with Zustand store setup for state management
-- Generated the Postman collection examples for API testing
+- https://youtu.be/X97L1CvsqiE
 
 ## Features
 

@@ -6,10 +6,8 @@
   font-display: swap;
 }
 
-/* FIX: Wrapped in :global() because CSS Modules cannot target the 'html' tag directly */
-:global(html) {
-  scroll-behavior: smooth;
-}
+/* REMOVED: html/body styling cannot exist in a .module.css file. 
+   Move 'scroll-behavior: smooth' to your globals.css instead. */
 
 .fullscreenBackground {
   position: relative;
@@ -154,7 +152,7 @@
   transform: translateY(-5px);
 }
 
-/* Bouncing Text Animation - Original Speed */
+/* Bouncing Text Animation */
 .bouncing-text {
   position: relative;
   display: inline-block;
@@ -164,7 +162,7 @@
 .bouncing-text span {
   display: inline-block;
   position: relative;
-  animation: smoothBounce 1.5s cubic-bezier(0.5, 0.05, 0.7, 0.5) infinite; /* Restored to original speed */
+  animation: smoothBounce 1.5s cubic-bezier(0.5, 0.05, 0.7, 0.5) infinite;
 }
 
 @keyframes smoothBounce {
@@ -182,7 +180,7 @@
   }
 }
 
-/* Feature Cards Styles with improved spacing */
+/* Feature Cards Styles */
 .featuresSection {
   width: 100%;
   padding: 3rem 0 9rem;
@@ -403,7 +401,7 @@
   width: 100%;
 }
 
-/* Keyframes for various animations */
+/* Keyframes */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }

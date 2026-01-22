@@ -15,6 +15,7 @@ export default function ArticleCard({ article }: {
     <div className={styles.card}>
       {article.urlToImage && (
         <div className={styles.imageContainer}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             src={article.urlToImage} 
             alt={article.title} 
@@ -25,7 +26,10 @@ export default function ArticleCard({ article }: {
       <div className={styles.content}>
         <h2 className={styles.title}>{article.title}</h2>
         <p className={styles.source}>
-          {article.source.name} • {new Date(article.publishedAt).toLocaleDateString()}
+          {/* suppressHydrationWarning prevents errors when server time differs from client time */}
+          <span suppressHydrationWarning>
+            {article.source.name} • {new Date(article.publishedAt).toLocaleDateString()}
+          </span>
         </p>
         <p className={styles.description}>{article.description}</p>
       </div>

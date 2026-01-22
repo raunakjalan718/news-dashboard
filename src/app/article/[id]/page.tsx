@@ -9,13 +9,22 @@ import styles from '../../newsPage.module.css';
 export default function ArticleDetail() {
   const params = useParams();
   const router = useRouter();
-  const id = decodeURIComponent(params.id as string);
+  
+  // FIX: Safely access params.id to prevent build errors when params are undefined
+  const rawId = params?.id;
+  const id = rawId ? decodeURIComponent(rawId as string) : null;
   
   const [article, setArticle] = useState<any>(null);
   const [summary, setSummary] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   
   useEffect(() => {
+    // FIX: Don't attempt to fetch if ID is missing
+    if (!id) {
+        setLoading(false);
+        return;
+    }
+
     const fetchArticleAndSummarize = async () => {
       try {
         setLoading(true);

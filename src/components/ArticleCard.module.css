@@ -61,6 +61,7 @@
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
+  /* CSS Line Clamping for multi-line truncation */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;

@@ -2,18 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Add the scroll behavior here instead of in the module file */
 html {
   scroll-behavior: smooth;
 }
 
+/* Ensure body can scroll and take full height */
 html, body {
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  /* overflow-x: hidden prevents horizontal scrollbar, 
+     but we allow overflow-y (vertical) to default to 'auto' */
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
-/* Font declaration */
 @font-face {
   font-family: 'Higuen Serif';
   src: url('/fonts/HiguenSerif.otf') format('opentype');

@@ -12,6 +12,10 @@ html, body {
 /* Font declaration */
 @font-face {
   font-family: 'Higuen Serif';
+  /* IMPORTANT: 
+     Ensure the file "HiguenSerif.otf" is located in your project's "public/fonts" folder.
+     The path must be relative to the public directory.
+  */
   src: url('/fonts/HiguenSerif.otf') format('opentype');
   font-weight: normal;
   font-style: normal;

@@ -11,6 +11,10 @@ export default function NewsPage() {
   const { articles, loading, error, fetchArticles, language, setLanguage } = useNewsStore();
   const router = useRouter();
   const [showDropdown, setShowDropdown] = useState(false);
+  
+  // FIX: Add mounted state to prevent hydration mismatches between server and client
+  const [mounted, setMounted] = useState(false);
+  
   const dropdownRef = useRef<HTMLDivElement>(null);
   
   // Language options configuration
@@ -24,16 +28,23 @@ export default function NewsPage() {
   
   // Get current language label
   const getCurrentLanguageLabel = () => {
+    // FIX: Only render language-specific label after mount to avoid hydration mismatch
+    if (!mounted) return "English (US)";
+    
     const option = languageOptions.find(opt => opt.value === language);
     return option ? option.label : "English (US)";
   };
   
   useEffect(() => {
+    setMounted(true);
     fetchArticles();
     
-    const savedLanguage = localStorage.getItem("preferredLanguage");
-    if (savedLanguage) {
-      setLanguage(savedLanguage);
+    // Check localStorage only on the client side
+    if (typeof window !== 'undefined') {
+        const savedLanguage = localStorage.getItem("preferredLanguage");
+        if (savedLanguage) {
+            setLanguage(savedLanguage);
+        }
     }
     
     // Close dropdown when clicking outside
@@ -128,12 +139,13 @@ export default function NewsPage() {
           <div className={styles.errorMessage}>
             {error}
           </div>
-        ) : articles.length > 0 ? (
+        ) : (articles || []).length > 0 ? (
           <div className={styles.articleGrid}>
-            {articles.map((article, index) => (
+            {/* FIX: Handle potential undefined articles or titles safely */}
+            {(articles || []).map((article, index) => (
               <Link 
                 key={index} 
-                href={`/article/${encodeURIComponent(article.title)}`}
+                href={`/article/${encodeURIComponent(article?.title || '')}`}
                 className={styles.articleLink}
               >
                 <ArticleCard article={article} />

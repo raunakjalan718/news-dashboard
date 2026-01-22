@@ -10,16 +10,18 @@ export default function ArticleDetail() {
   const params = useParams();
   const router = useRouter();
   
-  // FIX: Safely access params.id to prevent build errors when params are undefined
+  // FIX: Handle the case where params might be empty or id is an array
   const rawId = params?.id;
-  const id = rawId ? decodeURIComponent(rawId as string) : null;
+  
+  // Ensure we are decoding a single string, not an array or undefined
+  const id = typeof rawId === 'string' ? decodeURIComponent(rawId) : null;
   
   const [article, setArticle] = useState<any>(null);
   const [summary, setSummary] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   
   useEffect(() => {
-    // FIX: Don't attempt to fetch if ID is missing
+    // FIX: Don't attempt to fetch if ID is invalid
     if (!id) {
         setLoading(false);
         return;
@@ -101,6 +103,7 @@ export default function ArticleDetail() {
         
         {article.urlToImage && (
           <div className={styles.articleImageContainer}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src={article.urlToImage} 
               alt={article.title}

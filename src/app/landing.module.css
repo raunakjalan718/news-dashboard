@@ -6,14 +6,15 @@
   font-display: swap;
 }
 
-/* REMOVED: html/body styling cannot exist in a .module.css file. 
-   Move 'scroll-behavior: smooth' to your globals.css instead. */
-
 .fullscreenBackground {
   position: relative;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
-  overflow-y: auto;
+  /* FIX: Removed 'overflow-y: auto' so the main window scrollbar is used. 
+     This fixes the mouse wheel issue. */
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .backgroundFixed {
@@ -26,6 +27,8 @@
   background-image: url('/images/gbimg.jpeg');
   background-size: cover;
   background-position: center;
+  /* Ensure the background stays put while content scrolls over it */
+  will-change: transform; 
 }
 
 .contentWrapper {
@@ -33,6 +36,9 @@
   z-index: 2;
   opacity: 0;
   animation: fadeIn 1s ease-out forwards;
+  /* Ensure content takes up space to force browser scrolling */
+  width: 100%;
+  flex-grow: 1; 
 }
 
 .pageExiting {

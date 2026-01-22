@@ -64,6 +64,9 @@ export default function LandingPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const maxSlide = Math.ceil(features.length / 3) - 1;
   
+  // FIX: Track window width in state to prevent Hydration Mismatch errors
+  const [windowWidth, setWindowWidth] = useState(0);
+  
   // Add refs for elements to animate on scroll
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -77,9 +80,25 @@ export default function LandingPage() {
   const [isExiting, setIsExiting] = useState(false);
   const contentWrapperRef = useRef<HTMLDivElement>(null);
   
+  // FIX: Handle Window Resize safely on the client only
+  useEffect(() => {
+    // Set initial width
+    setWindowWidth(window.innerWidth);
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguage(e.target.value);
-    localStorage.setItem("preferredLanguage", e.target.value);
+    // FIX: Ensure localStorage is accessed safely
+    if (typeof window !== 'undefined') {
+        localStorage.setItem("preferredLanguage", e.target.value);
+    }
   };
 
   const navigateTo = (path: string) => {
@@ -192,13 +211,16 @@ export default function LandingPage() {
   
   // Calculate the transform position for the carousel
   const getTransformValue = () => {
+    // FIX: Use state variable instead of window to ensure SSR compatibility
+    // If windowWidth is 0 (initial server render), default to Desktop view to match server snapshot
+    
     // For mobile (1 card per view)
-    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+    if (windowWidth > 0 && windowWidth <= 768) {
       return `translateX(-${currentSlide * 100}%)`;
     }
     
     // For tablets (2 cards per view)
-    if (typeof window !== 'undefined' && window.innerWidth <= 1024) {
+    if (windowWidth > 0 && windowWidth <= 1024) {
       return `translateX(-${currentSlide * 50}%)`;
     }
     
@@ -245,6 +267,8 @@ export default function LandingPage() {
           <h1 
             ref={titleRef} 
             className={`${styles.mainTitle} ${styles['bouncing-text']}`}
+            // Suppress hydration warning because we modify this element in useEffect
+            suppressHydrationWarning={true}
           >
             AI News
           </h1>

@@ -10,8 +10,6 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  /* FIX: Removed 'overflow-y: auto' so the main window scrollbar is used. 
-     This fixes the mouse wheel issue. */
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
@@ -27,7 +25,6 @@
   background-image: url('/images/gbimg.jpeg');
   background-size: cover;
   background-position: center;
-  /* Ensure the background stays put while content scrolls over it */
   will-change: transform; 
 }
 
@@ -36,7 +33,6 @@
   z-index: 2;
   opacity: 0;
   animation: fadeIn 1s ease-out forwards;
-  /* Ensure content takes up space to force browser scrolling */
   width: 100%;
   flex-grow: 1; 
 }
@@ -47,11 +43,12 @@
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
+/* REDUCED: Padding was 3rem */
 .topBar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 3rem;
+  padding: 1.5rem;
   z-index: 10;
 }
 
@@ -59,10 +56,10 @@
   background: transparent;
   color: white;
   border: 2px solid white;
-  padding: 10px 15px;
+  padding: 8px 12px; /* Slightly smaller padding */
   font-family: 'Higuen Serif', serif;
-  width: 180px;
-  font-size: 1.2rem;
+  width: 160px; /* Slightly narrower */
+  font-size: 1rem;
   border-radius: 4px;
   appearance: auto;
   cursor: pointer;
@@ -92,6 +89,7 @@
   opacity: 0.9;
 }
 
+/* REDUCED: Margins were much larger */
 .centerContent {
   flex-grow: 1;
   display: flex;
@@ -99,16 +97,16 @@
   justify-content: center;
   align-items: center;
   padding: 0 1rem;
-  margin-bottom: 6rem;
-  margin-top: 2rem;
+  margin-top: 0;      /* Removed top margin */
+  margin-bottom: 2rem; /* Reduced from 6rem */
 }
 
 .mainTitle {
   font-family: 'Higuen Serif', serif;
-  font-size: clamp(5rem, 15vw, 9rem);
+  font-size: clamp(4rem, 12vw, 8rem); /* Slightly smaller max size */
   color: white;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem; /* Reduced from 1.5rem */
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   opacity: 0;
   transform: translateY(-30px);
@@ -126,15 +124,16 @@
   }
 }
 
+/* REDUCED: Margins were 2.5rem auto 4rem */
 .subtitle {
   font-family: 'Higuen Serif', serif;
-  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
   color: white;
   text-align: center;
   max-width: 900px;
-  margin: 2.5rem auto 4rem;
+  margin: 1rem auto 2.5rem; /* Tighter spacing */
   letter-spacing: 2px;
-  line-height: 1.8;
+  line-height: 1.6;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   animation: slideUp 1.5s ease-out forwards;
 }
@@ -144,8 +143,8 @@
   background: transparent;
   color: white;
   border: 2px solid white;
-  padding: 1.2rem 3.5rem;
-  font-size: 1.4rem;
+  padding: 1rem 3rem; /* Slightly reduced padding */
+  font-size: 1.2rem;
   letter-spacing: 3px;
   cursor: pointer;
   animation: scaleIn 1s ease-out forwards;
@@ -162,7 +161,7 @@
 .bouncing-text {
   position: relative;
   display: inline-block;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem; /* Reduced margin */
 }
 
 .bouncing-text span {
@@ -187,21 +186,23 @@
 }
 
 /* Feature Cards Styles */
+/* REDUCED: Padding was 3rem 0 9rem */
 .featuresSection {
   width: 100%;
-  padding: 3rem 0 9rem;
+  padding: 1rem 0 4rem; 
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
 }
 
+/* REDUCED: Margin was 5rem */
 .featuresTitle {
   font-family: 'Higuen Serif', serif;
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2rem, 4vw, 3.5rem);
   color: white;
   text-align: center;
-  margin-bottom: 5rem;
+  margin-bottom: 3rem; 
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   position: relative;
   opacity: 0;
@@ -217,7 +218,7 @@
 .featuresTitle::after {
   content: '';
   position: absolute;
-  bottom: -15px;
+  bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
@@ -292,10 +293,11 @@
   line-height: 1.8;
 }
 
+/* REDUCED: Margin was 4rem */
 .carouselButtons {
   display: flex;
   justify-content: center;
-  margin-top: 4rem;
+  margin-top: 2rem; 
   opacity: 0;
   transition: opacity 2s ease-out 0.5s;
 }
@@ -325,10 +327,11 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
+/* REDUCED: Margin was 2.5rem */
 .carouselIndicators {
   display: flex;
   justify-content: center;
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
   opacity: 0;
   transition: opacity 2s ease-out 0.8s;
 }
@@ -474,10 +477,10 @@
   }
   
   .topBar {
-    padding: 2rem;
+    padding: 1.5rem;
   }
   
   .featuresTitle {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 }

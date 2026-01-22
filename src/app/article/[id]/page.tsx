@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getArticleById } from "@/services/newsService";
+import { getArticleById, Article } from "@/services/newsService";
 import { summarizeText } from "@/services/aiService";
 import styles from '../../newsPage.module.css';
 
@@ -10,18 +10,16 @@ export default function ArticleDetail() {
   const params = useParams();
   const router = useRouter();
   
-  // FIX: Handle the case where params might be empty or id is an array
+  // Safe ID extraction
   const rawId = params?.id;
-  
-  // Ensure we are decoding a single string, not an array or undefined
   const id = typeof rawId === 'string' ? decodeURIComponent(rawId) : null;
   
-  const [article, setArticle] = useState<any>(null);
+  // FIX: Replaced <any> with proper Article type
+  const [article, setArticle] = useState<Article | null>(null);
   const [summary, setSummary] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   
   useEffect(() => {
-    // FIX: Don't attempt to fetch if ID is invalid
     if (!id) {
         setLoading(false);
         return;
@@ -31,12 +29,19 @@ export default function ArticleDetail() {
       try {
         setLoading(true);
         const fetchedArticle = await getArticleById(id);
-        setArticle(fetchedArticle);
         
-        if (fetchedArticle && fetchedArticle.content) {
-          setSummary("Generating AI summary...");
-          const articleSummary = await summarizeText(fetchedArticle.content);
-          setSummary(articleSummary);
+        // Ensure fetchedArticle is not undefined before setting
+        if (fetchedArticle) {
+            setArticle(fetchedArticle);
+            
+            if (fetchedArticle.content) {
+              setSummary("Generating AI summary...");
+              const articleSummary = await summarizeText(fetchedArticle.content);
+              setSummary(articleSummary);
+            }
+        } else {
+            // Handle case where article is not found
+            setArticle(null);
         }
       } catch (error) {
         console.error("Error:", error);
@@ -74,26 +79,15 @@ export default function ArticleDetail() {
   
   return (
     <div className={styles.fullscreenBackground}>
-      {/* Top bar with matching button styles */}
       <div className={styles.topBar}>
-        {/* Back to News button - styled like the landing button */}
-        <button 
-          onClick={goToNews}
-          className={styles.landingButton}
-        >
+        <button onClick={goToNews} className={styles.landingButton}>
           Back to News
         </button>
-
-        {/* Home button - renamed from "Go to Landing" */}
-        <button 
-          onClick={goToLanding}
-          className={styles.landingButton}
-        >
+        <button onClick={goToLanding} className={styles.landingButton}>
           Home
         </button>
       </div>
       
-      {/* Article content */}
       <div className={styles.articleContainer}>
         <h1 className={styles.articleTitle}>{article.title}</h1>
         
@@ -132,7 +126,6 @@ export default function ArticleDetail() {
         </div>
       </div>
       
-      {/* Footer with larger text */}
       <div className={styles.footer}>
         <div className={styles.footerContent}>
           <p>Raunak Jalan</p>

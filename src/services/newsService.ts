@@ -16,27 +16,35 @@ export interface Article {
   author?: string;
 }
 
-// Mock data for fallback or testing
+// Mock data for fallback or testing (Updated with working image URLs)
 export const MOCK_ARTICLES: Article[] = [
   {
-    title: "Sample News Article 1",
-    description: "This is a sample article description for testing purposes.",
+    title: "AI Breakthrough: New Model Surpasses Human Performance",
+    description: "Scientists have unveiled a new AI architecture that demonstrates unprecedented reasoning capabilities.",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nisl nunc eu nisl.",
-    publishedAt: "2025-06-25T14:30:00Z",
-    source: { name: "Sample News" },
-    urlToImage: "https://source.unsplash.com/random/800x600/?news",
-    url: "https://example.com/article1"
+    publishedAt: new Date().toISOString(),
+    source: { name: "Tech Daily" },
+    urlToImage: "https://picsum.photos/800/600?random=1",
+    url: "#"
   },
   {
-    title: "Sample News Article 2",
-    description: "Another sample article for your news dashboard project.",
+    title: "Global Markets Rally Amid Tech Sector Growth",
+    description: "Stock markets worldwide reached new highs today as technology stocks continued their upward trajectory.",
     content: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    publishedAt: "2025-06-24T10:15:00Z",
-    source: { name: "Sample News" },
-    urlToImage: "https://source.unsplash.com/random/800x600/?technology",
-    url: "https://example.com/article2"
+    publishedAt: new Date(Date.now() - 86400000).toISOString(),
+    source: { name: "Finance Now" },
+    urlToImage: "https://picsum.photos/800/600?random=2",
+    url: "#"
   },
-  // Add more mock articles as needed
+  {
+    title: "Sustainable Energy: Solar Efficiency Breaks Records",
+    description: "Researchers have achieved 40% efficiency in new solar panel prototypes, promising a greener future.",
+    content: "Detailed analysis of the solar panel efficiency breakthrough and its implications for the global energy market.",
+    publishedAt: new Date(Date.now() - 172800000).toISOString(),
+    source: { name: "Green Earth" },
+    urlToImage: "https://picsum.photos/800/600?random=3",
+    url: "#"
+  }
 ];
 
 /**
@@ -45,23 +53,32 @@ export const MOCK_ARTICLES: Article[] = [
  * @returns Promise<Article[]> - Array of news articles
  */
 export const getTopHeadlines = async (country = 'us'): Promise<Article[]> => {
+  // Return mocks immediately if no API key is set
+  if (!API_KEY) {
+    console.warn('No API Key found, using mock data');
+    return MOCK_ARTICLES;
+  }
+
   try {
     const response = await axios.get(`${BASE_URL}/top-headlines`, {
       params: {
         country: country,
-        pageSize: 10, // Updated from 7 to 10 articles
+        pageSize: 10,
         apiKey: API_KEY
       }
     });
     
     if (response.data?.articles && Array.isArray(response.data.articles)) {
-      return response.data.articles;
+      // Filter out articles with tag '[Removed]' which NewsAPI often returns
+      return response.data.articles.filter((article: Article) => article.title !== '[Removed]');
     } else {
       console.error('Invalid response format from News API');
       return MOCK_ARTICLES;
     }
   } catch (error) {
-    console.error('Error fetching news:', error);
+    // Note: NewsAPI Free Tier often blocks Vercel server requests (Status 426).
+    // This catch block ensures the site still works (using mocks) in that scenario.
+    console.error('Error fetching news (likely API limit or Cloud Block):', error);
     return MOCK_ARTICLES;
   }
 };
@@ -73,8 +90,14 @@ export const getTopHeadlines = async (country = 'us'): Promise<Article[]> => {
  */
 export const getArticleById = async (id: string): Promise<Article | undefined> => {
   try {
+    // Attempt to fetch fresh headlines to find the article
     const articles = await getTopHeadlines();
-    return articles.find(article => article.title === id);
+    const found = articles.find(article => article.title === id);
+    
+    if (found) return found;
+    
+    // Fallback: Check mock data if not found in live data
+    return MOCK_ARTICLES.find(article => article.title === id);
   } catch (error) {
     console.error('Error fetching article:', error);
     return MOCK_ARTICLES.find(article => article.title === id);
@@ -87,6 +110,8 @@ export const getArticleById = async (id: string): Promise<Article | undefined> =
  * @returns Promise<Article[]> - Array of matching articles
  */
 export const searchArticles = async (query: string): Promise<Article[]> => {
+  if (!API_KEY) return [];
+
   try {
     const response = await axios.get(`${BASE_URL}/everything`, {
       params: {
@@ -97,7 +122,7 @@ export const searchArticles = async (query: string): Promise<Article[]> => {
     });
     
     if (response.data?.articles && Array.isArray(response.data.articles)) {
-      return response.data.articles;
+       return response.data.articles.filter((article: Article) => article.title !== '[Removed]');
     } else {
       console.error('Invalid response format from News API');
       return [];

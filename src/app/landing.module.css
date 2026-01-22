@@ -9,8 +9,10 @@
 .fullscreenBackground {
   position: relative;
   width: 100%;
+  /* Ensure minimum height is screen size, but allow growing */
   min-height: 100vh;
-  overflow-x: hidden;
+  /* Use visible overflow so the browser's main scrollbar is used */
+  overflow: visible;
   display: flex;
   flex-direction: column;
 }
@@ -20,12 +22,14 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  z-index: 1;
+  height: 100vh; /* Use 100vh specifically */
+  z-index: 0;    /* Lower z-index to be safe */
   background-image: url('/images/gbimg.jpeg');
   background-size: cover;
   background-position: center;
-  will-change: transform; 
+  will-change: transform;
+  /* CRITICAL FIX: Ignore mouse events so scrolling passes through to the body */
+  pointer-events: none;
 }
 
 .contentWrapper {
@@ -43,7 +47,6 @@
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-/* REDUCED: Padding was 3rem */
 .topBar {
   display: flex;
   justify-content: space-between;
@@ -56,9 +59,9 @@
   background: transparent;
   color: white;
   border: 2px solid white;
-  padding: 8px 12px; /* Slightly smaller padding */
+  padding: 8px 12px;
   font-family: 'Higuen Serif', serif;
-  width: 160px; /* Slightly narrower */
+  width: 160px;
   font-size: 1rem;
   border-radius: 4px;
   appearance: auto;
@@ -89,7 +92,6 @@
   opacity: 0.9;
 }
 
-/* REDUCED: Margins were much larger */
 .centerContent {
   flex-grow: 1;
   display: flex;
@@ -97,16 +99,16 @@
   justify-content: center;
   align-items: center;
   padding: 0 1rem;
-  margin-top: 0;      /* Removed top margin */
-  margin-bottom: 2rem; /* Reduced from 6rem */
+  margin-top: 0;
+  margin-bottom: 2rem;
 }
 
 .mainTitle {
   font-family: 'Higuen Serif', serif;
-  font-size: clamp(4rem, 12vw, 8rem); /* Slightly smaller max size */
+  font-size: clamp(4rem, 12vw, 8rem);
   color: white;
   text-align: center;
-  margin-bottom: 0.5rem; /* Reduced from 1.5rem */
+  margin-bottom: 0.5rem;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   opacity: 0;
   transform: translateY(-30px);
@@ -124,14 +126,13 @@
   }
 }
 
-/* REDUCED: Margins were 2.5rem auto 4rem */
 .subtitle {
   font-family: 'Higuen Serif', serif;
   font-size: clamp(1.2rem, 3vw, 1.8rem);
   color: white;
   text-align: center;
   max-width: 900px;
-  margin: 1rem auto 2.5rem; /* Tighter spacing */
+  margin: 1rem auto 2.5rem;
   letter-spacing: 2px;
   line-height: 1.6;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -143,7 +144,7 @@
   background: transparent;
   color: white;
   border: 2px solid white;
-  padding: 1rem 3rem; /* Slightly reduced padding */
+  padding: 1rem 3rem;
   font-size: 1.2rem;
   letter-spacing: 3px;
   cursor: pointer;
@@ -157,11 +158,10 @@
   transform: translateY(-5px);
 }
 
-/* Bouncing Text Animation */
 .bouncing-text {
   position: relative;
   display: inline-block;
-  margin-bottom: 0.5rem; /* Reduced margin */
+  margin-bottom: 0.5rem;
 }
 
 .bouncing-text span {
@@ -185,8 +185,6 @@
   }
 }
 
-/* Feature Cards Styles */
-/* REDUCED: Padding was 3rem 0 9rem */
 .featuresSection {
   width: 100%;
   padding: 1rem 0 4rem; 
@@ -196,7 +194,6 @@
   position: relative;
 }
 
-/* REDUCED: Margin was 5rem */
 .featuresTitle {
   font-family: 'Higuen Serif', serif;
   font-size: clamp(2rem, 4vw, 3.5rem);
@@ -293,7 +290,6 @@
   line-height: 1.8;
 }
 
-/* REDUCED: Margin was 4rem */
 .carouselButtons {
   display: flex;
   justify-content: center;
@@ -327,7 +323,6 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* REDUCED: Margin was 2.5rem */
 .carouselIndicators {
   display: flex;
   justify-content: center;
@@ -361,7 +356,6 @@
   animation: pulse 2s infinite;
 }
 
-/* Footer Styles */
 .footer {
   background: rgba(0, 0, 0, 0.5);
   padding: 1.5rem 2rem;
@@ -410,7 +404,6 @@
   width: 100%;
 }
 
-/* Keyframes */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -454,7 +447,6 @@
   to { width: 150px; }
 }
 
-/* Responsive adjustments */
 @media (max-width: 1024px) {
   .featureCard {
     flex: 0 0 calc(50% - 3rem);

@@ -6,7 +6,8 @@
   font-display: swap;
 }
 
-html {
+/* FIX: Wrapped in :global() because CSS Modules cannot target the 'html' tag directly */
+:global(html) {
   scroll-behavior: smooth;
 }
 

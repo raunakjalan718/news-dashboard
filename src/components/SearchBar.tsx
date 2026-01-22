@@ -22,6 +22,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search news..."
+          aria-label="Search news"
           className="flex-1 p-2 border rounded-md"
         />
         <button 
